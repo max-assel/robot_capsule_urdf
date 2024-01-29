@@ -15,7 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+cmake_minimum_required(VERSION 3.10)
+project(robot_capsule_urdf)
 
 SET(PROJECT_NAME robot_capsule_urdf)
 SET(PROJECT_DESCRIPTION
