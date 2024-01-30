@@ -27,6 +27,30 @@ import csv
 
 from urdf_parser_py.urdf import *
 
+def trunk_subroutine(link):
+    print("Running trunk subroutine on", link.name)
+    capsule_link = link
+    length = 0.1
+    radius = 0.02
+    capsule_link.collision.geometry = Capsule(length, radius)
+
+    return capsule_link
+
+def battery_subroutine(link):
+    print("Running battery subroutine on", link.name)
+
+def optitrack_subroutine(link):
+    print("Running optitrack subroutine on", link.name)
+
+def hip_subroutine(link):
+    print("Running hip subroutine on", link.name)
+
+def thigh_subroutine(link):
+    print("Running thigh subroutine on", link.name)
+
+def calf_subroutine(link):
+    print("Running calf subroutine on", link.name)
+
 parser = argparse.ArgumentParser(usage='robot_capsule_urdf <options> urdf_file capsule_param\nLoad an URDF file')
 parser.add_argument('urdf_file', type=argparse.FileType('r'), nargs='?',
                     default=None, help='Urdf file. Use - for stdin')
@@ -44,20 +68,32 @@ else:
 
 links = robot.links
 
-param_reader = csv.reader(open(args.capsule_param.name, 'rb'),
-                          delimiter=' ', quotechar='|')
+# param_reader = csv.reader(open(args.capsule_param.name, 'rb'),
+#                           delimiter=' ', quotechar='|')
 
-for row in param_reader:
-    for link in links:
-        if row[0] == link.name:
-            cylinder = Cylinder (float (row[2]), float (row[1]))
-            link.collision.geometry = cylinder
-            link.collision.origin.position[0] = float (row[3])
-            link.collision.origin.position[1] = float (row[4])
-            link.collision.origin.position[2] = float (row[5])
-            link.collision.origin.rotation[0] = float (row[6])
-            link.collision.origin.rotation[1] = float (row[7])
-            link.collision.origin.rotation[2] = float (row[8])
+# for row in param_reader:
+for link in links:
+    if (link.name == "trunk_original"):
+        link = trunk_subroutine(link) 
+    elif (link.name == "battery_link"):
+        battery_subroutine(link)
+    elif (link.name == "optitrack_link"):
+        optitrack_subroutine(link)
+    elif (len(link.name) >= 3 and link.name[-3:] == "hip"):
+        hip_subroutine(link)
+    elif ("thigh" in link.name):
+        thigh_subroutine(link)
+    elif ("calf" in link.name):
+        calf_subroutine(link)
+        # if row[0] == link.name:
+        #     cylinder = Cylinder (float (row[2]), float (row[1]))
+        #     link.collision.geometry = cylinder
+        #     link.collision.origin.position[0] = float (row[3])
+        #     link.collision.origin.position[1] = float (row[4])
+        #     link.collision.origin.position[2] = float (row[5])
+        #     link.collision.origin.rotation[0] = float (row[6])
+        #     link.collision.origin.rotation[1] = float (row[7])
+        #     link.collision.origin.rotation[2] = float (row[8])
 
 robot.links = links
 urdf = robot.to_xml_string ()

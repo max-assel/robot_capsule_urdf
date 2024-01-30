@@ -6,6 +6,8 @@ Generation of capsule collision models urdf files.
 
 Quickstart
 ----------
+ 1.  Clone repository recursively:
+    `git clone --recurse-submodules https://github.com/max-assel/robot_capsule_urdf.git`
 
  1.  Compile `robot_capsule_urdf` by usual ros commands.
 
